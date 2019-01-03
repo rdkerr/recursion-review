@@ -12,28 +12,27 @@ var getElementsByClassName = function(className, node) {
   if(!node) {
     node = document.body;
   };
-  console.log(node);
   var results = [];
   if (node === null) {
     return results;
-  } else {
-    var classes = node.classList;
-    if(classes && classes.contains(className)) {
-      results.push(node);
-    };
-    var children = node.children;
-    var length;
-    if(!children) {
-      length = 0;
-    } else {
-      length = children.length;
-    };
-    for(var i = 0; i < length; i++) {
-      var childResults = getElementsByClassName(className, children[i]);
-      if(childResults && childResults.length > 0) {
-        results.push(childResults);
-      };
-    };
-    return results;
+  }
+  var classes = node.classList;
+  var children = node.children;
+  var length;
+  if(classes && classes.contains(className)) {
+    results.push(node);
   };
+  // length = !children ? 0 : children.length;
+  if(!children) {
+    length = 0;
+  } else {
+    length = children.length;
+  };
+  for(var i = 0; i < length; i++) {
+    var childResults = getElementsByClassName(className, children[i]);
+    if(childResults && childResults.length > 0) {
+      results = results.concat(childResults);
+    };
+  };
+  return results;
 };
