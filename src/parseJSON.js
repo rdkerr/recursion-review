@@ -3,15 +3,25 @@
 
 // but you're not, so you'll write it from scratch:
 var parseJSON = function(json) {
-  console.log(json);
   json = json.trim();
   if(json[0] === '"') {
+    if(json[json.length -1] === '"' && json[json.length - 2] === '\\') {
+      throw new SyntaxError("Poorly formed string");
+    }
     if(json[json.length -1] === '"') {
-      return json.slice(1, json.length -1);
+      var string = json.slice(1, json.length -1);
+      var result = '';
+      for (var i = 0; i < string.length; i++) {
+        if (string[i] === '\\') {
+          i++;
+        }
+        result += string[i];
+      }
+      return result;
     };
   };
   if(!isNaN(json)) {
-    return + json;
+    return +json;
   }
   if(json === 'null') {
     return null;
@@ -38,6 +48,9 @@ var parseJSON = function(json) {
       throw new SyntaxError('poorly formed array');
     };
   } else if (json[0] === '{') {
+    if (json[json.length -1] === '\n') {
+      console.log('YOUOUOUO');
+    }
     if (json[json.length -1] === '}') {
       if(json.length === 2) {
         return {};
